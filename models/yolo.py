@@ -222,7 +222,7 @@ class Model(nn.Module):
         LOGGER.info('Fusing layers... ')
         for m in self.model.modules():
             if isinstance(m, (Conv, DWConv)) and hasattr(m, 'bn'):
-                if isinstance(m.bn, MixBatchNorm2d)
+                if isinstance(m.bn, MixBatchNorm2d):
                     m.conv = fuse_conv_and_bn(m.conv, m.bn.bn)
                 else:
                     m.conv = fuse_conv_and_bn(m.conv, m.bn)  # update conv
