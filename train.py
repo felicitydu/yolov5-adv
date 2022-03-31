@@ -319,7 +319,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         if RANK in [-1, 0]:
             pbar = tqdm(pbar, total=nb, bar_format='{l_bar}{bar:10}{r_bar}{bar:-10b}')  # progress bar
         optimizer.zero_grad()
-        for i, (imgs, targets, paths, _) in pbar:  # batch -------------------------------------------------------------
+        for i, mnb in pbar:  # batch -------------------------------------------------------------
             if opt.attack:
                 (imgs, targets, paths, _), (aimgs, atargets, apaths, a_) = mnb
             else:
