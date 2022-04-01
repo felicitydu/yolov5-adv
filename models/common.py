@@ -58,10 +58,11 @@ class Conv(nn.Module):
     def __init__(self, c1, c2, k=1, s=1, p=None, g=1, act=True):  # ch_in, ch_out, kernel, stride, padding, groups
         super().__init__()
         self.conv = nn.Conv2d(c1, c2, k, s, autopad(k, p), groups=g, bias=False)
-        if adv.adv_batch_size==0:
-            self.bn = nn.BatchNorm2d(c2)
-        else:
-            self.bn = MixBatchNorm2d(c2)
+#         if adv.adv_batch_size==0:
+#             self.bn = nn.BatchNorm2d(c2)
+#         else:
+#             self.bn = MixBatchNorm2d(c2)
+        self.bn = MixBatchNorm2d(c2)
         self.act = nn.SiLU() if act is True else (act if isinstance(act, nn.Module) else nn.Identity())
 
     def forward(self, x):
@@ -135,10 +136,11 @@ class BottleneckCSP(nn.Module):
         self.cv2 = nn.Conv2d(c1, c_, 1, 1, bias=False)
         self.cv3 = nn.Conv2d(c_, c_, 1, 1, bias=False)
         self.cv4 = Conv(2 * c_, c2, 1, 1)
-        if adv.adv_batch_size==0:
-            self.bn = nn.BatchNorm2d(2 * c_)  # applied to cat(cv2, cv3)
-        else:
-            self.bn = MixBatchNorm2d(2 * c_)
+#         if adv.adv_batch_size==0:
+#             self.bn = nn.BatchNorm2d(2 * c_)  # applied to cat(cv2, cv3)
+#         else:
+#             self.bn = MixBatchNorm2d(2 * c_)
+        self.bn = MixBatchNorm2d(2 * c_)
         self.act = nn.SiLU()
         self.m = nn.Sequential(*(Bottleneck(c_, c_, shortcut, g, e=1.0) for _ in range(n)))
 
