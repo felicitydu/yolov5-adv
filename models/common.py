@@ -41,16 +41,17 @@ class MixBatchNorm2d(nn.Module):
         super().__init__()
         self.num_features=ch_out
         self.bn=nn.BatchNorm2d(ch_out)
-        if adv.adv_batch_size>0:
-            self.aux_bn = nn.BatchNorm2d(ch_out)
+#         if adv.adv_batch_size>0:
+#             self.aux_bn = nn.BatchNorm2d(ch_out)
 
     def forward(self, input):
-        if not self.training or adv.adv_batch_size==0:
-            return self.bn(input)
-        input0 = self.bn(input[:-adv.adv_batch_size])
-        input1 = self.aux_bn(input[-adv.adv_batch_size:])
-        input = torch.cat((input0, input1), 0)
-        return input
+        return self.bn(input)
+#         if not self.training or adv.adv_batch_size==0:
+#             return self.bn(input)
+#         input0 = self.bn(input[:-adv.adv_batch_size])
+#         input1 = self.aux_bn(input[-adv.adv_batch_size:])
+#         input = torch.cat((input0, input1), 0)
+#         return input
       
 
 class Conv(nn.Module):
